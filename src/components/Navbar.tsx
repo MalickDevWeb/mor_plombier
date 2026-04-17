@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, Phone, ShoppingBag } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useCartStore } from '../store/cartStore'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
+  const { items, setOpen: setCartOpen } = useCartStore()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,19 +63,40 @@ const Navbar = () => {
             </Link>
           ))}
 
-          <Link 
-            to="/commander" 
-            className="btn-primary py-2.5 px-5 text-sm"
-          >
-            Commander
-          </Link>
+          <div className="flex items-center gap-4 pl-4 border-l border-gray-200/20">
+            <button 
+                onClick={() => setCartOpen(true)}
+                className={`relative p-2 transition-colors ${ (scrolled || location.pathname !== '/') ? 'text-gray-900 bg-gray-50' : 'text-white bg-white/10'} rounded-xl hover:bg-primary-600 hover:text-white group`}
+            >
+                <ShoppingBag size={20} />
+                {items.length > 0 && (
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-orange-500 text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white">
+                        {items.length}
+                    </span>
+                )}
+            </button>
+            <Link 
+                to="/commander" 
+                className="btn-primary py-2.5 px-5 text-sm"
+            >
+                Commander
+            </Link>
+          </div>
         </div>
 
         {/* Mobile Menu Toggle */}
         <div className="flex items-center gap-4 md:hidden">
-            <Link to="/boutique" className="text-gray-600">
+            <button 
+                onClick={() => setCartOpen(true)}
+                className="relative p-2 text-gray-900"
+            >
                 <ShoppingBag size={24} />
-            </Link>
+                {items.length > 0 && (
+                    <span className="absolute top-0 right-0 w-5 h-5 bg-orange-500 text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white">
+                        {items.length}
+                    </span>
+                )}
+            </button>
             <button 
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-gray-900 p-2"

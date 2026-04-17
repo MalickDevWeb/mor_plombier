@@ -27,18 +27,47 @@ const Home = () => {
 
         <div className="section relative z-10 text-center text-white pt-48 md:pt-40 pb-20">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.2,
+                  delayChildren: 0.3
+                }
+              }
+            }}
           >
-            <h1 className="heading-1 mb-8">
+            <motion.h1 
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] } }
+              }}
+              className="heading-1 mb-8"
+            >
               L'EXPERTISE <span className="text-gradient">PRO</span><br />
               <span className="italic font-serif font-light text-primary-200">Di jëfë ak dëgg</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto font-medium opacity-90 leading-relaxed font-outfit">
+            </motion.h1>
+            
+            <motion.p 
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 0.9, y: 0, transition: { duration: 0.8 } }
+              }}
+              className="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto font-medium leading-relaxed font-outfit"
+            >
               Basés à <span className="text-white font-bold underline decoration-primary-500 underline-offset-8">Mbour</span>, nous intervenons avec rigueur sur tous les chantiers du <span className="text-white font-bold underline decoration-primary-500 underline-offset-8">Sénégal</span>.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            </motion.p>
+            
+            <motion.div 
+              variants={{
+                hidden: { opacity: 0, scale: 0.9 },
+                visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
+              }}
+              className="flex flex-col sm:flex-row gap-6 justify-center"
+            >
               <Link to="/commander" className="btn-primary px-10 py-5 text-lg group text-white">
                 Intervention Rapide
                 <CheckCircle className="group-hover:rotate-12 transition-transform" size={20} />
@@ -46,10 +75,15 @@ const Home = () => {
               <Link to="/boutique" className="btn-outline border-white text-white hover:bg-white hover:text-gray-900 px-10 py-5 text-lg">
                 Équipement Pro
               </Link>
-            </div>
+            </motion.div>
           </motion.div>
             
-          <div className="mt-12 flex items-center justify-center gap-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
+            className="mt-12 flex items-center justify-center gap-8"
+          >
             <div className="flex -space-x-3">
               {[
                 '/image/seeder/avatar1.png',
@@ -57,9 +91,19 @@ const Home = () => {
                 '/image/seeder/avatar3.png',
                 '/image/seeder/customer_2.png'
               ].map((src, i) => (
-                <div key={i} className="w-14 h-14 rounded-full border-4 border-white/20 bg-gray-200 overflow-hidden shadow-xl transform hover:scale-110 transition-transform">
+                <motion.div 
+                  key={i} 
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ 
+                    duration: 3, 
+                    repeat: Infinity, 
+                    delay: i * 0.4,
+                    ease: "easeInOut"
+                  }}
+                  className="w-14 h-14 rounded-full border-4 border-white/20 bg-gray-200 overflow-hidden shadow-xl transform hover:scale-110 transition-transform"
+                >
                   <img src={src} alt="client-senegalais" className="w-full h-full object-cover" />
-                </div>
+                </motion.div>
               ))}
             </div>
             <div className="text-left">
@@ -69,7 +113,7 @@ const Home = () => {
               <p className="text-sm font-bold text-white">500+ Niit ñu kontaan ci Dakar</p>
               <p className="text-[10px] text-gray-400 uppercase tracking-tighter">Confiance Totale • Service 24h/7</p>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 

@@ -1,4 +1,6 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
+import PageWrapper from './components/PageWrapper'
 import MainLayout from './layout/MainLayout'
 import Home from './pages/Home'
 import Services from './pages/Services'
@@ -16,40 +18,41 @@ import AdminProducts from './pages/admin/Products'
 import AdminServices from './pages/admin/Services'
 
 function App() {
+  const location = useLocation()
+
   return (
-    <Routes>
-      {/* ─── Public Routes ─────────────────────────────────── */}
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<Home />} />
-        <Route path="services" element={<Services />} />
-        <Route path="commander" element={<Booking />} />
-        <Route path="boutique" element={<Shop />} />
-        <Route path="a-propos" element={<About />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="panier" element={<Cart />} />
-      </Route>
-
-      {/* ─── Admin Login (not linked in the UI) ────────────── */}
-      <Route path="/admin/login" element={<AdminLogin />} />
-
-      {/* ─── Admin Protected Routes ─────────────────────────── */}
-      {/* Only accessible after phone+PIN auth on /admin/login  */}
-      <Route element={<AdminGuard />}>
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-          <Route path="orders" element={<AdminOrders />} />
-          <Route path="products" element={<AdminProducts />} />
-          <Route path="services" element={<AdminServices />} />
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        {/* ─── Public Routes ─────────────────────────────────── */}
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<PageWrapper><Home /></PageWrapper>} />
+          <Route path="services" element={<PageWrapper><Services /></PageWrapper>} />
+          <Route path="commander" element={<PageWrapper><Booking /></PageWrapper>} />
+          <Route path="boutique" element={<PageWrapper><Shop /></PageWrapper>} />
+          <Route path="a-propos" element={<PageWrapper><About /></PageWrapper>} />
+          <Route path="contact" element={<PageWrapper><Contact /></PageWrapper>} />
+          <Route path="panier" element={<PageWrapper><Cart /></PageWrapper>} />
         </Route>
-      </Route>
 
-      {/* ─── Redirect old /login & /register to home ────────── */}
-      <Route path="/login" element={<Navigate to="/" replace />} />
-      <Route path="/register" element={<Navigate to="/" replace />} />
+        {/* ─── Admin Login (not linked in the UI) ────────────── */}
+        <Route path="/admin/login" element={<PageWrapper><AdminLogin /></PageWrapper>} />
 
-      {/* ─── 404 fallback ───────────────────────────────────── */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        {/* ─── Admin Protected Routes ─────────────────────────── */}
+        <Route element={<AdminGuard />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<PageWrapper><AdminDashboard /></PageWrapper>} />
+            <Route path="orders" element={<PageWrapper><AdminOrders /></PageWrapper>} />
+            <Route path="products" element={<PageWrapper><AdminProducts /></PageWrapper>} />
+            <Route path="services" element={<PageWrapper><AdminServices /></PageWrapper>} />
+          </Route>
+        </Route>
+
+        {/* ─── Redirects & Fallback ────────────────────────────── */}
+        <Route path="/login" element={<Navigate to="/" replace />} />
+        <Route path="/register" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </AnimatePresence>
   )
 }
 

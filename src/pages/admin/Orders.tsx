@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { MapPin, Phone, Clock, CheckCircle, Package, Loader2, Map as MapIcon, ExternalLink, MessageSquare } from 'lucide-react'
+import { MapPin, Phone, Clock, CheckCircle, Package, Loader2, Map as MapIcon, ExternalLink, MessageSquare, Smartphone } from 'lucide-react'
 import api from '../../services/api'
 import L from 'leaflet'
 
@@ -48,6 +48,19 @@ const AdminOrders = () => {
         }
     }
 
+    const updatePaymentStatus = async (id: number, payment_status: string) => {
+        try {
+            await api.patch(`/admin/orders/${id}/payment-status`, { payment_status })
+            fetchOrders()
+            if (selectedOrder?.id === id) {
+                setSelectedOrder({ ...selectedOrder, payment_status })
+            }
+        } catch (error) {
+            console.error("Failed to update payment status", error)
+            alert("Erreur lors de la mise à jour du paiement.")
+        }
+    }
+
     return (
         <div className="space-y-6">
             <div>
@@ -87,11 +100,24 @@ const AdminOrders = () => {
                                             {order.status}
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
-                                        <Phone size={12} /> {order.customer_phone}
+                                    <div className="flex items-center justify-between mt-3">
+                                        <div className="flex items-center gap-2 text-xs text-gray-500">
+                                            <Phone size={12} /> {order.customer_phone}
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            {order.payment_method === 'wave' ? <div className="p-1.5 bg-blue-50 text-blue-500 rounded-lg" title="Wave"><Smartphone size={14} /></div> :
+                                             order.payment_method === 'orange' ? <div className="p-1.5 bg-orange-50 text-orange-500 rounded-lg" title="Orange Money"><Smartphone size={14} /></div> :
+                                             <div className="p-1.5 bg-green-50 text-green-500 rounded-lg" title="WhatsApp/Cash"><MessageSquare size={14} /></div>}
+                                            
+                                            {order.payment_status === 'paid' && (
+                                                <div className="p-1.5 bg-emerald-50 text-emerald-500 rounded-lg" title="Payé">
+                                                    <CheckCircle size={14} />
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
-                                    <div className="flex items-center gap-2 text-xs text-gray-400">
-                                        <Clock size={12} /> {new Date(order.created_at).toLocaleString('fr-FR')}
+                                    <div className="flex items-center gap-2 text-[10px] text-gray-400 mt-2">
+                                        <Clock size={10} /> {new Date(order.created_at).toLocaleString('fr-FR')}
                                     </div>
                                 </div>
                             ))}
@@ -170,12 +196,24 @@ const AdminOrders = () => {
                                                      <span className="text-green-500">💬 WhatsApp / Espèces</span>}
                                                 </div>
                                             </div>
-                                            <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                                                <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Statut Paiement</h4>
-                                                <div className="flex items-center gap-2 font-black text-gray-900 uppercase text-xs">
-                                                    {selectedOrder.payment_status === 'paid' ? <span className="text-emerald-500 flex items-center gap-1"><CheckCircle size={12}/> Payé</span> : 
-                                                     <span className="text-amber-500 flex items-center gap-1"><Clock size={12}/> En attente</span>}
+                                            <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 flex justify-between items-center group">
+                                                <div>
+                                                    <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Statut Paiement</h4>
+                                                    <div className="flex items-center gap-2 font-black text-gray-900 uppercase text-xs">
+                                                        {selectedOrder.payment_status === 'paid' ? <span className="text-emerald-500 flex items-center gap-1"><CheckCircle size={12}/> Payé</span> : 
+                                                        <span className="text-amber-500 flex items-center gap-1"><Clock size={12}/> En attente</span>}
+                                                    </div>
                                                 </div>
+                                                <button 
+                                                    onClick={() => updatePaymentStatus(selectedOrder.id, selectedOrder.payment_status === 'paid' ? 'pending' : 'paid')}
+                                                    className={`px-3 py-1.5 rounded-xl text-[10px] font-black transition-all ${
+                                                        selectedOrder.payment_status === 'paid' 
+                                                        ? 'bg-amber-100 text-amber-600 hover:bg-amber-200' 
+                                                        : 'bg-emerald-100 text-emerald-600 hover:bg-emerald-200'
+                                                    }`}
+                                                >
+                                                    {selectedOrder.payment_status === 'paid' ? 'Marquer Impayé' : 'Marquer Payé'}
+                                                </button>
                                             </div>
                                         </div>
 

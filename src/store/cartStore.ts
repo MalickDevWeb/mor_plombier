@@ -12,6 +12,8 @@ export interface CartItem {
 
 interface CartState {
     items: CartItem[];
+    isOpen: boolean;
+    setOpen: (open: boolean) => void;
     addItem: (product: any) => void;
     removeItem: (productId: number) => void;
     updateQuantity: (productId: number, quantity: number) => void;
@@ -23,6 +25,8 @@ export const useCartStore = create<CartState>()(
     persist(
         (set, get) => ({
             items: [],
+            isOpen: false,
+            setOpen: (open) => set({ isOpen: open }),
             addItem: (product) => {
                 const currentItems = get().items;
                 const existingItem = currentItems.find(i => i.product_id === product.id);
@@ -33,7 +37,8 @@ export const useCartStore = create<CartState>()(
                             i.product_id === product.id
                                 ? { ...i, quantity: i.quantity + 1 }
                                 : i
-                        )
+                        ),
+                        isOpen: true // Auto open on add
                     });
                 } else {
                     set({
@@ -44,7 +49,8 @@ export const useCartStore = create<CartState>()(
                             price: product.price,
                             quantity: 1,
                             image_url: product.image_url
-                        }]
+                        }],
+                        isOpen: true // Auto open on add
                     });
                 }
             },

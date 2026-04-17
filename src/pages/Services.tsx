@@ -21,23 +21,49 @@ const Services = () => {
         </div>
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-5 py-2 bg-primary-600/20 border border-primary-500/30 rounded-full text-primary-300 text-sm font-bold uppercase tracking-widest mb-8"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.15,
+                  delayChildren: 0.2
+                }
+              }
+            }}
           >
-            Basés à Mbour • Partout au Sénégal
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, scale: 0.8 },
+                visible: { opacity: 1, scale: 1, transition: { type: 'spring', damping: 15 } }
+              }}
+              className="inline-flex items-center gap-2 px-5 py-2 bg-primary-600/20 border border-primary-500/30 rounded-full text-primary-300 text-sm font-bold uppercase tracking-widest mb-8"
+            >
+              Basés à Mbour • Partout au Sénégal
+            </motion.div>
+            
+            <motion.h1
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+              }}
+              className="text-5xl md:text-7xl font-black text-white mb-6 leading-[0.95]"
+            >
+              Nos Services <span className="text-gradient">Experts</span>
+            </motion.h1>
+            
+            <motion.p
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 0.9, y: 0, transition: { duration: 0.8 } }
+              }}
+              className="text-primary-200 text-xl max-w-2xl mx-auto opacity-90 font-outfit"
+            >
+              Des solutions durables pour tous vos besoins en eau et assainissement — résidentiel, commercial et industriel.
+            </motion.p>
           </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl font-black text-white mb-6 leading-[0.95]"
-          >
-            Nos Services <span className="text-gradient">Experts</span>
-          </motion.h1>
-          <p className="text-primary-200 text-xl max-w-2xl mx-auto opacity-90 font-outfit">
-            Des solutions durables pour tous vos besoins en eau et assainissement — résidentiel, commercial et industriel.
-          </p>
         </div>
       </section>
 

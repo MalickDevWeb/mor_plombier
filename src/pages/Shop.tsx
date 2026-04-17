@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ShoppingCart, ShoppingBag, Search, Loader2, MessageCircle } from 'lucide-react'
+import { ShoppingCart, ShoppingBag, Search, Loader2, MessageCircle, Eye } from 'lucide-react'
 import { useProductStore } from '../store/productStore'
 import { useCartStore } from '../store/cartStore'
+import type { Product } from '../store/productStore'
+import ProductQuickView from '../components/ProductQuickView'
 
 const Shop = () => {
     const { products, isLoading, fetchProducts } = useProductStore()
-    const { items: cart, addItem: addToCart, getTotal } = useCartStore()
+    const { items: cart, addItem: addToCart } = useCartStore()
     const [searchTerm, setSearchTerm] = useState('')
     const [activeCategory, setActiveCategory] = useState('Tous')
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
     useEffect(() => {
         fetchProducts()
@@ -24,10 +27,15 @@ const Shop = () => {
         return matchSearch && matchCat
     })
 
-    // Checkout is now handled in the dedicated Cart page
-
     return (
         <div className="pt-24 pb-32 min-h-screen bg-[#FAFBFF]">
+            {/* Quick View Modal */}
+            <ProductQuickView
+                product={selectedProduct}
+                isOpen={!!selectedProduct}
+                onClose={() => setSelectedProduct(null)}
+            />
+
             {/* Header */}
             <header className="relative bg-gray-900 py-24 px-4 overflow-hidden">
                 <div className="absolute inset-0">
@@ -102,7 +110,14 @@ const Shop = () => {
                                                 alt={p.name}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                             />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <button
+                                                    onClick={() => setSelectedProduct(p)}
+                                                    className="bg-white text-gray-900 px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-xl"
+                                                >
+                                                    <Eye size={16} /> Quick View
+                                                </button>
+                                            </div>
                                             <div className="absolute top-3 left-3 bg-primary-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow">
                                                 {p.category?.name || 'Pro'}
                                             </div>
@@ -175,34 +190,6 @@ const Shop = () => {
                     </div>
                 )}
             </section>
-
-            {/* Floating Cart */}
-            {cart.length > 0 && (
-                <motion.div
-                    initial={{ y: 100 }}
-                    animate={{ y: 0 }}
-                    className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[55] w-[calc(100%-2rem)] max-w-lg bg-gray-900 text-white p-6 rounded-[2rem] shadow-2xl border border-white/10 backdrop-blur-xl"
-                >
-                    <div className="flex items-center justify-between gap-8">
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-primary-600 rounded-2xl flex items-center justify-center text-white font-bold relative">
-                                <ShoppingBag />
-                                <span className="absolute -top-2 -right-2 w-6 h-6 bg-orange-500 rounded-full text-xs flex items-center justify-center border-2 border-gray-900">{cart.length}</span>
-                            </div>
-                            <div>
-                                <div className="text-gray-400 text-xs font-medium uppercase tracking-wider">Votre panier</div>
-                                <div className="font-black text-xl">{getTotal().toLocaleString()} FCFA</div>
-                            </div>
-                        </div>
-                        <Link
-                            to="/panier"
-                            className="bg-green-500 hover:bg-green-600 px-6 py-3 rounded-xl font-black flex items-center gap-2 transition-all shadow-lg text-white"
-                        >
-                            Voir Panier <MessageCircle size={18} />
-                        </Link>
-                    </div>
-                </motion.div>
-            )}
         </div>
     )
 }

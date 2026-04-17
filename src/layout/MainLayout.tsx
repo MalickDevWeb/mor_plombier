@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import FloatingWhatsApp from '../components/FloatingWhatsApp'
+import CartDrawer from '../components/CartDrawer'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
@@ -19,6 +20,7 @@ const MainLayout = () => {
         <Outlet />
       </main>
       <Footer />
+      <CartDrawer />
       <FloatingWhatsApp />
     </div>
   )
