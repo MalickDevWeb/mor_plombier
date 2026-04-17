@@ -289,6 +289,8 @@ const AdminServices = () => {
                             const file = e.target.files?.[0]
                             if (file) setFormData({...formData, image: file})
                           }}
+                          title="Télécharger une image d'illustration"
+                          aria-label="Télécharger une image d'illustration"
                         />
                       </div>
                     </div>
@@ -329,6 +331,7 @@ const AdminServices = () => {
                     <input 
                       required
                       type="text"
+                      placeholder="Ex: À partir de 15.000 F"
                       className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-primary-500"
                       value={formData.price_indicator}
                       onChange={e => setFormData({...formData, price_indicator: e.target.value})}
@@ -340,6 +343,7 @@ const AdminServices = () => {
                     <label className="text-sm font-bold text-gray-700">Description détaillée</label>
                     <textarea 
                       rows={4}
+                      placeholder="Description des étapes de l'intervention..."
                       className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-primary-500"
                       value={formData.description}
                       onChange={e => setFormData({...formData, description: e.target.value})}

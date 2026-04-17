@@ -301,6 +301,8 @@ const AdminProducts = () => {
                             const file = e.target.files?.[0]
                             if (file) setFormData({...formData, image: file})
                           }}
+                          title="Télécharger une image du produit"
+                          aria-label="Télécharger une image du produit"
                         />
                       </div>
                     </div>
@@ -341,6 +343,7 @@ const AdminProducts = () => {
                     <input 
                       required
                       type="number"
+                      placeholder="Ex: 15000"
                       className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-primary-500"
                       value={formData.price}
                       onChange={e => setFormData({...formData, price: e.target.value})}
@@ -353,6 +356,7 @@ const AdminProducts = () => {
                     <input 
                       required
                       type="number"
+                      placeholder="Ex: 50"
                       className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-primary-500"
                       value={formData.stock}
                       onChange={e => setFormData({...formData, stock: e.target.value})}
@@ -364,6 +368,7 @@ const AdminProducts = () => {
                     <label className="text-sm font-bold text-gray-700">Description</label>
                     <textarea 
                       rows={3}
+                      placeholder="Description détaillée du matériel..."
                       className="w-full px-4 py-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-primary-500"
                       value={formData.description}
                       onChange={e => setFormData({...formData, description: e.target.value})}
