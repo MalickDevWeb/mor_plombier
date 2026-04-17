@@ -8,7 +8,7 @@ const Cart = () => {
     const navigate = useNavigate()
 
     const handleCheckout = () => {
-        const phoneNumber = '221762903264'
+        const phoneNumber = '221788260114'
         const itemsList = items.map(i => `• ${i.name} (×${i.quantity}) — ${(i.price * i.quantity).toLocaleString()} FCFA`).join('\n')
         const total = getTotal()
         const adminLink = `\n\n🔐 Accéder au dashboard:\nhttps://morplombierbi.vercel.app/admin?key=MOR-PLOMBERIE-2025-SECURE`

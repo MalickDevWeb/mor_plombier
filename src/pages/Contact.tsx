@@ -6,9 +6,9 @@ const Contact = () => {
         {
             icon: <Phone size={26} />,
             label: 'Appelez-nous',
-            value: '+221 76-290-32-64',
+            value: '+221 78-826-01-14',
             sub: 'Disponible 24h/7 — Urgences plomberie',
-            href: 'tel:+221762903264',
+            href: 'tel:+221788260114',
             color: 'from-primary-500 to-primary-700'
         },
         {
@@ -16,7 +16,7 @@ const Contact = () => {
             label: 'WhatsApp Direct',
             value: 'Envoyer un message',
             sub: 'Réponse en moins de 5 minutes',
-            href: 'https://wa.me/221762903264?text=Bonjour%20Mor%20Plomberie%2C%20j%27ai%20besoin%20d%27une%20intervention.',
+            href: 'https://wa.me/221788260114?text=Bonjour%20Mor%20Plomberie%2C%20j%27ai%20besoin%20d%27une%20intervention.',
             color: 'from-green-500 to-green-700'
         },
         {
@@ -113,8 +113,8 @@ const Contact = () => {
                             <div>
                                 <p className="font-black text-gray-900 text-xl">Mor Sylla</p>
                                 <p className="text-primary-600 font-medium text-sm">Fondateur & Expert • 10+ ans</p>
-                                <a href="tel:+221762903264" className="inline-flex items-center gap-1 mt-2 text-sm font-bold text-gray-700 hover:text-primary-600 transition-colors">
-                                    <Phone size={14} /> +221 76-290-32-64
+                                <a href="tel:+221788260114" className="inline-flex items-center gap-1 mt-2 text-sm font-bold text-gray-700 hover:text-primary-600 transition-colors">
+                                    <Phone size={14} /> +221 78-826-01-14
                                 </a>
                             </div>
                         </div>
@@ -193,7 +193,7 @@ const Contact = () => {
                                     <Send size={20} />
                                 </button>
                                 <a
-                                    href="https://wa.me/221762903264?text=Bonjour%20Mor%20Plomberie%2C%20j%27ai%20besoin%20d%27une%20intervention."
+                                    href="https://wa.me/221788260114?text=Bonjour%20Mor%20Plomberie%2C%20j%27ai%20besoin%20d%27une%20intervention."
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex-1 py-5 bg-green-500 hover:bg-green-600 text-white font-bold rounded-2xl flex items-center justify-center gap-3 shadow-xl shadow-green-500/30 transition-all hover:-translate-y-0.5"

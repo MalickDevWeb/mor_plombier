@@ -46,7 +46,8 @@ const Booking = () => {
         () => {
           setIsLocating(false)
           alert("📍 Position non détectée : Pour nous aider à vous trouver plus vite, autorisez l'accès à la position dans votre navigateur ou entrez votre adresse manuellement dans la description.")
-        }
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       )
     }
   }
@@ -73,7 +74,7 @@ const Booking = () => {
       })
 
       // 2. Redirect to WhatsApp
-      const phoneNumber = '221762903264'
+      const phoneNumber = '221788260114'
       const locString = location ? `\n📍 Position: https://www.google.com/maps?q=${location.lat},${location.lng}` : ''
       const adminLink = `\n\n🔐 Accéder au dashboard:\nhttps://morplombierbi.vercel.app/admin?key=MOR-PLOMBERIE-2025-SECURE`
       const text = encodeURIComponent(

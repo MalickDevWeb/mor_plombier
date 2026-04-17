@@ -119,7 +119,7 @@ const Shop = () => {
                                                 <span className="text-xl font-black text-gray-900">{p.price.toLocaleString()} <span className="text-sm font-bold text-gray-400">FCFA</span></span>
                                                 <div className="flex gap-2">
                                                     <a
-                                                        href={`https://wa.me/221762903264?text=${encodeURIComponent(`Bonjour, je voudrais commander: ${p.name} à ${p.price.toLocaleString()} FCFA`)}`}
+                                                        href={`https://wa.me/221788260114?text=${encodeURIComponent(`Bonjour, je voudrais commander: ${p.name} à ${p.price.toLocaleString()} FCFA`)}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center text-green-600 hover:bg-green-500 hover:text-white transition-all shadow-sm"
@@ -158,7 +158,7 @@ const Shop = () => {
                                     Plombiers et entreprises de bâtiment du Sénégal : bénéficiez de tarifs préférentiels sur vos commandes en gros.
                                 </p>
                                 <a
-                                    href="https://wa.me/221762903264?text=Bonjour%2C%20je%20suis%20un%20professionnel%20et%20je%20souhaite%20une%20offre%20en%20gros."
+                                    href="https://wa.me/221788260114?text=Bonjour%2C%20je%20suis%20un%20professionnel%20et%20je%20souhaite%20une%20offre%20en%20gros."
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-3 bg-green-500 hover:bg-green-600 px-8 py-5 rounded-2xl font-bold text-lg shadow-xl shadow-green-500/30 transition-all hover:-translate-y-1"

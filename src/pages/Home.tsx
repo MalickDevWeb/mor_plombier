@@ -127,9 +127,9 @@ const Home = () => {
 
             <div className="flex flex-wrap gap-4">
               <Link to="/commander" className="btn-primary">Demander un Devis Gratuit</Link>
-              <a href="tel:+221762903264" className="btn-outline">
+              <a href="tel:+221788260114" className="btn-outline">
                 <Phone size={20} />
-                +221 76-290-32-64
+                +221 78-826-01-14
               </a>
             </div>
           </div>
@@ -202,7 +202,7 @@ const Home = () => {
                         <Link to="/commander" className="px-8 py-4 bg-white text-primary-600 font-bold rounded-2xl hover:bg-primary-50 transition-all shadow-xl">
                             Commander Service
                         </Link>
-                        <a href="https://wa.me/221762903264" className="px-8 py-4 bg-accent-500 text-white font-bold rounded-2xl hover:bg-emerald-600 transition-all shadow-xl flex items-center gap-2">
+                        <a href="https://wa.me/221788260114" className="px-8 py-4 bg-accent-500 text-white font-bold rounded-2xl hover:bg-emerald-600 transition-all shadow-xl flex items-center gap-2">
                             WhatsApp Direct
                         </a>
                     </div>

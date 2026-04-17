@@ -114,7 +114,7 @@ const Navbar = () => {
                   Commander un service
                 </Link>
                 <a 
-                  href="tel:+221762903264" 
+                  href="tel:+221788260114" 
                   className="btn-outline w-full"
                 >
                   <Phone size={18} />

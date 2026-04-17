@@ -5,7 +5,7 @@ import { Phone, Loader2, Shield, CheckCircle, XCircle } from 'lucide-react'
 
 // Secret token embedded in the WhatsApp order link
 const MOR_ACCESS_TOKEN = 'MOR-PLOMBERIE-2025-SECURE'
-const MOR_PHONE = '762903264' // +221 76-290-32-64 normalized
+const MOR_PHONE = '788260114' // +221 78-826-01-14 normalized
 
 const AdminLogin = () => {
     const [searchParams] = useSearchParams()
@@ -119,7 +119,7 @@ const AdminLogin = () => {
                                         <input
                                             required
                                             type="tel"
-                                            placeholder="+221 76-290-32-64"
+                                            placeholder="+221 77-171-90-13"
                                             className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all font-outfit"
                                             value={phone}
                                             onChange={e => setPhone(e.target.value)}
