@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Wrench, ShoppingBag, Users, TrendingUp, Clock, CheckCircle2 } from 'lucide-react'
+import { Wrench, ShoppingBag, Users, TrendingUp, Clock } from 'lucide-react'
 
 const Dashboard = () => {
   const stats = [

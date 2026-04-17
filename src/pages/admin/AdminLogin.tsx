@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Phone, Loader2, Shield, CheckCircle, XCircle } from 'lucide-react'
 
 // Secret token embedded in the WhatsApp order link
-const MOR_ACCESS_TOKEN = 'MOR-PLOMBERIE-2025-SECURE'
+// const MOR_ACCESS_TOKEN = 'MOR-PLOMBERIE-2025-SECURE'
 const MOR_PHONE = '762903264' // +221 76-290-32-64 normalized
 
 const AdminLogin = () => {
