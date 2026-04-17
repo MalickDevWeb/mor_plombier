@@ -45,7 +45,7 @@ const Booking = () => {
         },
         () => {
           setIsLocating(false)
-          alert("Impossible de récupérer votre position. Veuillez l'activer dans les paramètres.")
+          alert("📍 Position non détectée : Pour nous aider à vous trouver plus vite, autorisez l'accès à la position dans votre navigateur ou entrez votre adresse manuellement dans la description.")
         }
       )
     }
@@ -75,7 +75,7 @@ const Booking = () => {
       // 2. Redirect to WhatsApp
       const phoneNumber = '221762903264'
       const locString = location ? `\n📍 Position: https://www.google.com/maps?q=${location.lat},${location.lng}` : ''
-      const adminLink = `\n\n🔐 Accéder au dashboard:\nhttp://localhost:5174/admin/login?key=MOR-PLOMBERIE-2025-SECURE`
+      const adminLink = `\n\n🔐 Accéder au dashboard:\nhttps://morplombierbi.vercel.app/admin?key=MOR-PLOMBERIE-2025-SECURE`
       const text = encodeURIComponent(
         `🔔 NOUVELLE COMMANDE\n\n👤 ${formData.name}\n📞 ${formData.phone}\n🛠 ${formData.service_name}\n📝 ${formData.description}\n📅 ${formData.date} à ${formData.time}${locString}${adminLink}`
       )
