@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { ShoppingCart, ShoppingBag, Search, Loader2, MessageCircle, Eye } from 'lucide-react'
+import { ShoppingCart, Search, Loader2, MessageCircle, Eye } from 'lucide-react'
 import { useProductStore } from '../store/productStore'
 import { useCartStore } from '../store/cartStore'
 import type { Product } from '../store/productStore'
@@ -9,7 +8,7 @@ import ProductQuickView from '../components/ProductQuickView'
 
 const Shop = () => {
     const { products, isLoading, fetchProducts } = useProductStore()
-    const { items: cart, addItem: addToCart } = useCartStore()
+    const { addItem: addToCart } = useCartStore()
     const [searchTerm, setSearchTerm] = useState('')
     const [activeCategory, setActiveCategory] = useState('Tous')
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
