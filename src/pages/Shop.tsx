@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { ShoppingCart, ShoppingBag, Search, Loader2, MessageCircle } from 'lucide-react'
 import { useProductStore } from '../store/productStore'
-import api from '../services/api'
 import { useCartStore } from '../store/cartStore'
 
 const Shop = () => {
     const { products, isLoading, fetchProducts } = useProductStore()
-    const { items: cart, addItem: addToCart, clearCart, getTotal } = useCartStore()
+    const { items: cart, addItem: addToCart, getTotal } = useCartStore()
     const [searchTerm, setSearchTerm] = useState('')
     const [activeCategory, setActiveCategory] = useState('Tous')
-    const [isCheckingOut, setIsCheckingOut] = useState(false)
 
     useEffect(() => {
         fetchProducts()
@@ -25,32 +24,7 @@ const Shop = () => {
         return matchSearch && matchCat
     })
 
-    const checkoutOrder = async () => {
-        setIsCheckingOut(true)
-        try {
-            await api.post('/orders', {
-                customer_name: 'Client Boutique',
-                customer_phone: 'Non spécifié',
-                address: 'Boutique en ligne',
-                items: cart.map(item => ({
-                    product_id: item.product_id,
-                    quantity: item.quantity,
-                    price: item.price
-                }))
-            })
-            const phoneNumber = '221762903264'
-            const itemsList = cart.map(i => `• ${i.name} (×${i.quantity}) — ${i.price.toLocaleString()} FCFA`).join('\n')
-            const total = getTotal()
-            const adminLink = `\n\n🔐 Accéder au dashboard:\nhttps://morplombierbi.vercel.app/admin?key=MOR-PLOMBERIE-2025-SECURE`
-            const text = encodeURIComponent(`🛒 *COMMANDE BOUTIQUE MOR*\n\n${itemsList}\n\n💰 *TOTAL: ${total.toLocaleString()} FCFA*${adminLink}`)
-            window.open(`https://wa.me/${phoneNumber}?text=${text}`, '_blank')
-            clearCart()
-        } catch (error) {
-            console.error('Checkout error', error)
-        } finally {
-            setIsCheckingOut(false)
-        }
-    }
+    // Checkout is now handled in the dedicated Cart page
 
     return (
         <div className="pt-24 pb-32 min-h-screen bg-[#FAFBFF]">
@@ -220,13 +194,12 @@ const Shop = () => {
                                 <div className="font-black text-xl">{getTotal().toLocaleString()} FCFA</div>
                             </div>
                         </div>
-                        <button
-                            onClick={checkoutOrder}
-                            disabled={isCheckingOut}
-                            className="bg-green-500 hover:bg-green-600 px-6 py-3 rounded-xl font-bold flex items-center gap-2 disabled:opacity-50 transition-all shadow-lg"
+                        <Link
+                            to="/panier"
+                            className="bg-green-500 hover:bg-green-600 px-6 py-3 rounded-xl font-black flex items-center gap-2 transition-all shadow-lg text-white"
                         >
-                            {isCheckingOut ? <Loader2 className="animate-spin" size={20} /> : <><MessageCircle size={18} /> Commander</>}
-                        </button>
+                            Voir Panier <MessageCircle size={18} />
+                        </Link>
                     </div>
                 </motion.div>
             )}

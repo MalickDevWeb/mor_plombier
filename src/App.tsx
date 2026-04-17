@@ -6,6 +6,7 @@ import Booking from './pages/Booking'
 import Shop from './pages/Shop'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import Cart from './pages/Cart'
 import AdminLayout from './layout/AdminLayout'
 import AdminDashboard from './pages/admin/Dashboard'
 import AdminLogin from './pages/admin/AdminLogin'
@@ -25,6 +26,7 @@ function App() {
         <Route path="boutique" element={<Shop />} />
         <Route path="a-propos" element={<About />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="panier" element={<Cart />} />
       </Route>
 
       {/* ─── Admin Login (not linked in the UI) ────────────── */}
