@@ -202,7 +202,7 @@ const Home = () => {
                         <Link to="/commander" className="px-8 py-4 bg-white text-primary-600 font-bold rounded-2xl hover:bg-primary-50 transition-all shadow-xl">
                             Commander Service
                         </Link>
-                        <a href="https://wa.me/221788260114" className="px-8 py-4 bg-accent-500 text-white font-bold rounded-2xl hover:bg-emerald-600 transition-all shadow-xl flex items-center gap-2">
+                        <a href="https://wa.me/221762903264" className="px-8 py-4 bg-accent-500 text-white font-bold rounded-2xl hover:bg-emerald-600 transition-all shadow-xl flex items-center gap-2">
                             WhatsApp Direct
                         </a>
                     </div>

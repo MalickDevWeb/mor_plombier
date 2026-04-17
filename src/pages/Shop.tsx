@@ -41,7 +41,7 @@ const Shop = () => {
             const phoneNumber = '221762903264'
             const itemsList = cart.map(i => `• ${i.name} (×${i.quantity}) — ${i.price.toLocaleString()} FCFA`).join('\n')
             const total = getTotal()
-            const adminLink = `\n\n🔐 Accéder au dashboard:\nhttp://localhost:5174/admin/login?key=MOR-PLOMBERIE-2025-SECURE`
+            const adminLink = `\n\n🔐 Accéder au dashboard:\nhttps://morplombierbi.vercel.app/admin?key=MOR-PLOMBERIE-2025-SECURE`
             const text = encodeURIComponent(`🛒 *COMMANDE BOUTIQUE MOR*\n\n${itemsList}\n\n💰 *TOTAL: ${total.toLocaleString()} FCFA*${adminLink}`)
             window.open(`https://wa.me/${phoneNumber}?text=${text}`, '_blank')
             clearCart()
