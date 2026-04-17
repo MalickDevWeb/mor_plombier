@@ -1,20 +1,72 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingBag, Trash2, Plus, Minus, ArrowLeft, MessageCircle, ShoppingCart } from 'lucide-react'
+import { ShoppingBag, Trash2, Plus, Minus, ArrowLeft, MessageCircle, ShoppingCart, MapPin, Loader2 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCartStore } from '../store/cartStore'
+import api from '../services/api'
+import { useState } from 'react'
 
 const Cart = () => {
     const { items, removeItem, updateQuantity, clearCart, getTotal } = useCartStore()
     const navigate = useNavigate()
+    const [location, setLocation] = useState<{lat: number, lng: number} | null>(null)
+    const [isLocating, setIsLocating] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const handleCheckout = () => {
-        const phoneNumber = '221788260114'
-        const itemsList = items.map(i => `• ${i.name} (×${i.quantity}) — ${(i.price * i.quantity).toLocaleString()} FCFA`).join('\n')
+    const handleGetLocation = () => {
+        setIsLocating(true)
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    setLocation({
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    })
+                    setIsLocating(false)
+                },
+                () => {
+                    setIsLocating(false)
+                    alert("📍 Position non détectée : Pour une livraison précise, autorisez l'accès à la position ou entrez votre adresse dans WhatsApp.")
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            )
+        }
+    }
+
+    const handleCheckout = async () => {
+        setIsSubmitting(true)
         const total = getTotal()
-        const adminLink = `\n\n🔐 Accéder au dashboard:\nhttps://morplombierbi.vercel.app/admin?key=MOR-PLOMBERIE-2025-SECURE`
-        const text = encodeURIComponent(`🛒 *COMMANDE BOUTIQUE MOR*\n\n${itemsList}\n\n💰 *TOTAL: ${total.toLocaleString()} FCFA*${adminLink}`)
-        window.open(`https://wa.me/${phoneNumber}?text=${text}`, '_blank')
-        // We don't clear the cart here in case they want to come back, or we could if preferred
+        
+        try {
+            // 1. Save to Database for Admin Tracking
+            await api.post('/orders', {
+                customer_name: 'Client Boutique',
+                customer_phone: 'WhatsApp',
+                address: location ? `LAT:${location.lat}, LNG:${location.lng}` : 'Non spécifié',
+                latitude: location?.lat,
+                longitude: location?.lng,
+                total_amount: total,
+                items: items.map(item => ({
+                    product_id: item.product_id,
+                    quantity: item.quantity,
+                    price: item.price
+                }))
+            })
+
+            // 2. Redirect to WhatsApp
+            const phoneNumber = '221788260114'
+            const itemsList = items.map(i => `• ${i.name} (×${i.quantity}) — ${(i.price * i.quantity).toLocaleString()} FCFA`).join('\n')
+            const locString = location ? `\n📍 Position: https://www.google.com/maps?q=${location.lat},${location.lng}` : ''
+            const adminLink = `\n\n🔐 Accéder au dashboard:\nhttps://morplombierbi.vercel.app/admin?key=MOR-PLOMBERIE-2025-SECURE`
+            const text = encodeURIComponent(`🛒 *COMMANDE BOUTIQUE MOR*\n\n${itemsList}\n\n💰 *TOTAL: ${total.toLocaleString()} FCFA*${locString}${adminLink}`)
+            window.open(`https://wa.me/${phoneNumber}?text=${text}`, '_blank')
+            
+            // Optional: clearCart()
+        } catch (error) {
+            console.error('Checkout error', error)
+            alert("Erreur lors de la préparation de la commande.")
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     if (items.length === 0) {
@@ -128,13 +180,25 @@ const Cart = () => {
                                 <p className="text-gray-400 font-medium mb-1">Total de la commande</p>
                                 <h2 className="text-4xl font-black text-white">{getTotal().toLocaleString()} <span className="text-xl text-primary-400">FCFA</span></h2>
                             </div>
-                            <button 
-                                onClick={handleCheckout}
-                                className="w-full md:w-auto bg-green-500 hover:bg-green-600 text-white px-10 py-5 rounded-2xl font-black text-lg shadow-xl shadow-green-500/20 flex items-center justify-center gap-3 transition-all hover:-translate-y-1"
-                            >
-                                <MessageCircle size={24} />
-                                Valider sur WhatsApp
-                            </button>
+                            <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+                                <button 
+                                    onClick={handleGetLocation}
+                                    className={`flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-bold transition-all ${
+                                        location ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-white/10 text-white hover:bg-white/20'
+                                    }`}
+                                >
+                                    <MapPin size={20} className={isLocating ? 'animate-bounce' : ''} />
+                                    {isLocating ? 'Localisation...' : location ? 'Position OK !' : 'Ajouter ma Position GPS'}
+                                </button>
+                                <button 
+                                    onClick={handleCheckout}
+                                    disabled={isSubmitting}
+                                    className="bg-green-500 hover:bg-green-600 text-white px-10 py-5 rounded-2xl font-black text-lg shadow-xl shadow-green-500/20 flex items-center justify-center gap-3 transition-all hover:-translate-y-1 disabled:opacity-50"
+                                >
+                                    {isSubmitting ? <Loader2 className="animate-spin" size={24} /> : <MessageCircle size={24} />}
+                                    {isSubmitting ? 'Préparation...' : 'Valider sur WhatsApp'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

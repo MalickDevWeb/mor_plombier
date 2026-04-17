@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { MapPin, Phone, Clock, CheckCircle, Package, Loader2 } from 'lucide-react'
+import { MapPin, Phone, Clock, CheckCircle, Package, Loader2, Map as MapIcon, ExternalLink } from 'lucide-react'
 import api from '../../services/api'
 import L from 'leaflet'
 
@@ -131,6 +131,18 @@ const AdminOrders = () => {
                                                 <MapPin size={48} className="mb-2 opacity-50" />
                                                 <p className="text-sm font-medium">Position GPS non fournie</p>
                                             </div>
+                                        )}
+                                        {selectedOrder.latitude && selectedOrder.longitude && (
+                                            <a 
+                                                href={`https://www.google.com/maps?q=${selectedOrder.latitude},${selectedOrder.longitude}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="absolute top-4 right-4 z-[1000] bg-white p-3 rounded-2xl shadow-xl border border-gray-100 flex items-center gap-2 font-bold text-gray-900 hover:bg-gray-50 transition-all active:scale-95"
+                                            >
+                                                <MapIcon size={18} className="text-primary-600" />
+                                                Navigation Google Maps
+                                                <ExternalLink size={14} className="text-gray-400" />
+                                            </a>
                                         )}
                                     </div>
 
