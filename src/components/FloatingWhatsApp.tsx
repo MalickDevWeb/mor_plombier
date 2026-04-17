@@ -15,7 +15,7 @@ const FloatingWhatsApp = () => {
       animate={{ scale: 1, opacity: 1 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
-      className="fixed bottom-8 right-8 z-[60] bg-accent-500 text-white p-4 rounded-full shadow-2xl flex items-center justify-center group"
+      className="fixed bottom-32 right-8 z-[60] bg-accent-500 text-white p-4 rounded-full shadow-2xl flex items-center justify-center group"
     >
       <div className="absolute right-full mr-4 bg-white text-gray-900 px-4 py-2 rounded-lg shadow-xl text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap hidden md:block border border-gray-100">
         Besoin d'aide ? WhatsApp
