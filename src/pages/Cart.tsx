@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useCartStore } from '../store/cartStore'
 import api from '../services/api'
 import { useState } from 'react'
+import { Copy, Smartphone, Wallet, Check } from 'lucide-react'
 
 const Cart = () => {
     const { items, removeItem, updateQuantity, clearCart, getTotal } = useCartStore()
@@ -11,6 +12,23 @@ const Cart = () => {
     const [location, setLocation] = useState<{lat: number, lng: number} | null>(null)
     const [isLocating, setIsLocating] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [paymentMethod, setPaymentMethod] = useState<'whatsapp' | 'wave' | 'orange'>('whatsapp')
+    const [copied, setCopied] = useState(false)
+
+    const ADMIN_PHONE = '788260114'
+
+    const handleCopyNumber = () => {
+        navigator.clipboard.writeText(ADMIN_PHONE)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+    }
+
+    const openWave = () => {
+        handleCopyNumber()
+        // Wave universal link for payment (if they have a merchant account, they can use wave.me/m/ID)
+        // Without ID, we just suggest opening the app or provide instructions
+        window.open('https://wave.com/pay', '_blank')
+    }
 
     const handleGetLocation = () => {
         setIsLocating(true)
@@ -44,6 +62,7 @@ const Cart = () => {
                 address: location ? `LAT:${location.lat}, LNG:${location.lng}` : 'Non spécifié',
                 latitude: location?.lat,
                 longitude: location?.lng,
+                payment_method: paymentMethod,
                 total_amount: total,
                 items: items.map(item => ({
                     product_id: item.product_id,
@@ -54,10 +73,11 @@ const Cart = () => {
 
             // 2. Redirect to WhatsApp
             const phoneNumber = '221788260114'
+            const methodLabel = paymentMethod === 'wave' ? '🌊 WAVE' : paymentMethod === 'orange' ? '🍊 ORANGE MONEY' : '💬 WHATSAPP'
             const itemsList = items.map(i => `• ${i.name} (×${i.quantity}) — ${(i.price * i.quantity).toLocaleString()} FCFA`).join('\n')
             const locString = location ? `\n📍 Position: https://www.google.com/maps?q=${location.lat},${location.lng}` : ''
             const adminLink = `\n\n🔐 Accéder au dashboard:\nhttps://morplombierbi.vercel.app/admin?key=MOR-PLOMBERIE-2025-SECURE`
-            const text = encodeURIComponent(`🛒 *COMMANDE BOUTIQUE MOR*\n\n${itemsList}\n\n💰 *TOTAL: ${total.toLocaleString()} FCFA*${locString}${adminLink}`)
+            const text = encodeURIComponent(`🛒 *COMMANDE BOUTIQUE MOR*\n\n💳 *PAIEMENT: ${methodLabel}*\n\n${itemsList}\n\n💰 *TOTAL: ${total.toLocaleString()} FCFA*${locString}${adminLink}`)
             window.open(`https://wa.me/${phoneNumber}?text=${text}`, '_blank')
             
             // Optional: clearCart()
@@ -175,6 +195,96 @@ const Cart = () => {
                     {/* Summary */}
                     <div className="bg-gray-900 rounded-[2.5rem] p-10 text-white shadow-2xl relative overflow-hidden mt-8">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-primary-600/20 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+                        
+                        <div className="relative z-10 mb-8 border-b border-white/10 pb-8">
+                            <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                                <Wallet className="text-primary-400" size={24} />
+                                Mode de paiement
+                            </h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <button 
+                                    onClick={() => setPaymentMethod('whatsapp')}
+                                    className={`p-4 rounded-2xl border-2 transition-all flex items-center gap-3 ${paymentMethod === 'whatsapp' ? 'border-primary-500 bg-primary-500/10' : 'border-white/5 bg-white/5 hover:bg-white/10'}`}
+                                >
+                                    <MessageCircle className="text-green-400" size={20} />
+                                    <div className="text-left">
+                                        <div className="font-bold text-sm">WhatsApp</div>
+                                        <div className="text-[10px] text-gray-500 uppercase font-black">À la livraison</div>
+                                    </div>
+                                </button>
+                                <button 
+                                    onClick={() => setPaymentMethod('wave')}
+                                    className={`p-4 rounded-2xl border-2 transition-all flex items-center gap-3 ${paymentMethod === 'wave' ? 'border-blue-500 bg-blue-500/10' : 'border-white/5 bg-white/5 hover:bg-white/10'}`}
+                                >
+                                    <Smartphone className="text-blue-400" size={20} />
+                                    <div className="text-left">
+                                        <div className="font-bold text-sm">Wave</div>
+                                        <div className="text-[10px] text-gray-500 uppercase font-black">Direct</div>
+                                    </div>
+                                </button>
+                                <button 
+                                    onClick={() => setPaymentMethod('orange')}
+                                    className={`p-4 rounded-2xl border-2 transition-all flex items-center gap-3 ${paymentMethod === 'orange' ? 'border-orange-500 bg-orange-500/10' : 'border-white/5 bg-white/5 hover:bg-white/10'}`}
+                                >
+                                    <Smartphone className="text-orange-400" size={20} />
+                                    <div className="text-left">
+                                        <div className="font-bold text-sm">Orange Money</div>
+                                        <div className="text-[10px] text-gray-500 uppercase font-black">Direct</div>
+                                    </div>
+                                </button>
+                            </div>
+
+                            {/* Payment Instructions */}
+                            <AnimatePresence mode="wait">
+                                {paymentMethod === 'wave' && (
+                                    <motion.div 
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        className="mt-6 p-6 bg-blue-500/10 border border-blue-500/20 rounded-2xl space-y-4"
+                                    >
+                                        <div className="flex justify-between items-center">
+                                            <p className="text-sm font-medium text-blue-100">Envoyez le total au numéro :</p>
+                                            <button 
+                                                onClick={handleCopyNumber}
+                                                className="flex items-center gap-2 text-xs font-black bg-blue-500 text-white px-3 py-1.5 rounded-lg hover:bg-blue-600 transition-colors"
+                                            >
+                                                {copied ? <Check size={14} /> : <Copy size={14} />}
+                                                {copied ? 'Copié !' : 'Copier'}
+                                            </button>
+                                        </div>
+                                        <div className="text-2xl font-black text-white tracking-widest text-center py-2 bg-gray-950/50 rounded-xl border border-white/5">
+                                            78 826 01 14
+                                        </div>
+                                        <button 
+                                            onClick={openWave}
+                                            className="w-full py-3 bg-white text-blue-600 font-black rounded-xl text-sm flex items-center justify-center gap-2 hover:bg-gray-100 transition-all active:scale-95"
+                                        >
+                                            Ouvrir l'application Wave 🌊
+                                        </button>
+                                    </motion.div>
+                                )}
+
+                                {paymentMethod === 'orange' && (
+                                    <motion.div 
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        className="mt-6 p-6 bg-orange-500/10 border border-orange-500/20 rounded-2xl space-y-4"
+                                    >
+                                        <p className="text-sm font-medium text-orange-100 italic">Composez le code suivant sur votre téléphone :</p>
+                                        <div className="text-xl font-black text-white text-center py-3 bg-gray-950/50 rounded-xl border border-white/5 break-all">
+                                            #144#12*788260114*{getTotal()}#
+                                        </div>
+                                        <div className="flex justify-between items-center bg-gray-950/30 p-4 rounded-xl">
+                                            <span className="text-xs text-gray-400">Numéro Marchand:</span>
+                                            <span className="font-bold text-orange-400">78 826 01 14</span>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+
                         <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8">
                             <div>
                                 <p className="text-gray-400 font-medium mb-1">Total de la commande</p>

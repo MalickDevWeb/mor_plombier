@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { MapPin, Phone, Clock, CheckCircle, Package, Loader2, Map as MapIcon, ExternalLink } from 'lucide-react'
+import { MapPin, Phone, Clock, CheckCircle, Package, Loader2, Map as MapIcon, ExternalLink, MessageSquare } from 'lucide-react'
 import api from '../../services/api'
 import L from 'leaflet'
 
@@ -161,6 +161,24 @@ const AdminOrders = () => {
                                             </div>
                                         </div>
 
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                                            <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                                                <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Mode de Paiement</h4>
+                                                <div className="flex items-center gap-2 font-black text-gray-900 uppercase text-xs">
+                                                    {selectedOrder.payment_method === 'wave' ? <span className="text-blue-500">🌊 Wave</span> : 
+                                                     selectedOrder.payment_method === 'orange' ? <span className="text-orange-500">🍊 Orange Money</span> : 
+                                                     <span className="text-green-500">💬 WhatsApp / Espèces</span>}
+                                                </div>
+                                            </div>
+                                            <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                                                <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Statut Paiement</h4>
+                                                <div className="flex items-center gap-2 font-black text-gray-900 uppercase text-xs">
+                                                    {selectedOrder.payment_status === 'paid' ? <span className="text-emerald-500 flex items-center gap-1"><CheckCircle size={12}/> Payé</span> : 
+                                                     <span className="text-amber-500 flex items-center gap-1"><Clock size={12}/> En attente</span>}
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div className="mb-8">
                                             <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Adresse / Détails</h4>
                                             <div className="bg-gray-50 p-4 rounded-2xl text-sm font-medium text-gray-700">
@@ -234,8 +252,5 @@ const AdminOrders = () => {
         </div>
     )
 }
-
-// Quick MessageSquare Icon patch it was imported but might not exist if I used it wrong above
-import { MessageSquare } from 'lucide-react'
 
 export default AdminOrders
